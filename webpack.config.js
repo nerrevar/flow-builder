@@ -35,6 +35,7 @@ module.exports = {
     hot: true
   },
   resolve: {
+    modules: ['node_modules'],
     alias: {
       '@': './'
     }
