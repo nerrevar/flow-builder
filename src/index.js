@@ -1,11 +1,12 @@
-import * as THREE from 'three'
+import "./style.sass"
+import * as THREE from "three"
 
-const flowBuilder = {
-  renderer: null,
-  scene: null,
-  camera: null,
+import Node from "./node"
 
-  init() {
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+
+export default class FlowBuilder {
+  constructor() {
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     window.addEventListener(
@@ -17,19 +18,33 @@ const flowBuilder = {
     this.scene = new THREE.Scene()
     this.scene.background = new THREE.Color(0x606060)
 
-    this.camera = new THREE.OrthographicCamera(-10, 10, -10, 10, 1, 50)
+    this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 50)
+    this.camera.position.z = 1
+    this.camera.lookAt(this.scene.position)
     this.scene.add(this.camera)
+
+    this.scene.add(new THREE.AxesHelper(10))
+    this.scene.add(new OrbitControls(this.camera, this.renderer.domElement))
 
     const light = new THREE.AmbientLight(0xffffff)
     this.scene.add(light)
 
+    const node = new Node(
+      0,
+      0,
+      [{ text: "test input" }],
+      [{ text: "test output" }]
+    )
+    console.log(node)
+    this.scene.add(node.mesh)
+
     this.animate()
-  },
+  }
 
   animate() {
     this.renderer.render(this.scene, this.camera)
     requestAnimationFrame(() => this.animate())
-  },
+  }
 }
 
-flowBuilder.init()
+new FlowBuilder()
