@@ -24,7 +24,7 @@ export default class FlowBuilder {
     this.scene.add(this.camera)
 
     this.scene.add(new THREE.AxesHelper(10))
-    this.scene.add(new OrbitControls(this.camera, this.renderer.domElement))
+    new OrbitControls(this.camera, this.renderer.domElement)
 
     const light = new THREE.AmbientLight(0xffffff)
     this.scene.add(light)
@@ -32,10 +32,9 @@ export default class FlowBuilder {
     const node = new Node(
       0,
       0,
-      [{ text: "test input" }],
+      [{ text: "test input" }, { text: "test2 input", index: 0 }, { text: "inp3" }],
       [{ text: "test output" }]
     )
-    console.log(node)
     this.scene.add(node.mesh)
 
     this.animate()
