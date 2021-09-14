@@ -1,12 +1,22 @@
 import * as THREE from "three"
 
-import { TEXT_PADDING, PORT_HEIGHT } from "./settings"
+import {
+  HEADER_HEIGHT,
+  FONT,
+  FONT_SIZE,
+  TEXT_PADDING,
+  PORT_HEIGHT,
+  NODE_COLOR,
+  NODE_HEADER_COLOR,
+  NODE_NAME_COLOR
+} from "./settings"
 
 import Port from "@/port"
 // import Output from "./Output"
 
 export default class Node {
-  constructor(x = 0, y = 0, inputs = [], outputs = []) {
+  constructor(name, x = 0, y = 0, inputs = [], outputs = []) {
+    this.name = name
     this.x = x
     this.y = y
     this.padding = {
@@ -54,11 +64,31 @@ export default class Node {
   createMesh() {
     this.mesh = new THREE.Mesh(
       new THREE.PlaneGeometry(this.width, this.height),
-      new THREE.MeshBasicMaterial({ color: 0x90ff90 })
+      new THREE.MeshBasicMaterial({ color: NODE_COLOR })
     )
-    this.mesh.name = "Node"
+    this.mesh.name = this.name
     this.mesh.position.set(this.x, this.y, 0)
     this.mesh.lookAt(this.x, this.y, 1)
+
+    const header = new THREE.Mesh(
+      new THREE.PlaneGeometry(this.width, HEADER_HEIGHT),
+      new THREE.MeshBasicMaterial({ color: NODE_HEADER_COLOR })
+    )
+    header.position.y = this.y + this.height / 2 + HEADER_HEIGHT / 2
+    this.mesh.add(header)
+
+    const name = new THREE.Mesh(
+      new THREE.TextBufferGeometry(this.name, {
+        font: FONT,
+        size: FONT_SIZE,
+        height: 0.01
+      }),
+      new THREE.MeshBasicMaterial({ color: NODE_NAME_COLOR })
+    )
+    name.geometry.computeBoundingBox()
+    name.position.y = this.y + this.height / 2 + HEADER_HEIGHT + FONT_SIZE
+    name.position.x = this.x - this.width / 2 + name.geometry.boundingBox.min.x + TEXT_PADDING
+    this.mesh.add(name)
   }
 
   addInput(inputParams) {

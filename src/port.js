@@ -6,9 +6,9 @@ import {
   FONT_SIZE,
   PORT_WIDTH,
   PORT_HEIGHT,
+  TEXT_PADDING,
   PORT_COLOR,
-  PORT_TEXT_COLOR,
-  TEXT_PADDING
+  PORT_TEXT_COLOR
 } from "./settings"
 
 export default class Port {
@@ -27,7 +27,7 @@ export default class Port {
   createMeshes() {
     this.blockMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(PORT_WIDTH, PORT_HEIGHT),
-      new THREE.MeshBasicMaterial({ color: 0xff0000 })
+      new THREE.MeshBasicMaterial({ color: PORT_COLOR })
     )
     this.blockMesh.position.y = this.isInput ?
       this.y - PORT_HEIGHT / 2 :
@@ -42,7 +42,7 @@ export default class Port {
         size: FONT_SIZE,
         height: 0.01
       }),
-      new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+      new THREE.MeshBasicMaterial({ color: PORT_TEXT_COLOR })
     )
     this.textMesh.geometry.computeBoundingBox()
     this.textMesh.position.y = this.isInput ?

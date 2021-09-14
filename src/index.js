@@ -5,6 +5,8 @@ import Node from "./node"
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
+import { BACKGROUND_COLOR } from "./settings"
+
 export default class FlowBuilder {
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -16,7 +18,7 @@ export default class FlowBuilder {
     document.querySelector("#three-entrypoint").appendChild(this.renderer.domElement)
 
     this.scene = new THREE.Scene()
-    this.scene.background = new THREE.Color(0x606060)
+    this.scene.background = new THREE.Color(BACKGROUND_COLOR)
 
     this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 50)
     this.camera.position.z = 1
@@ -30,6 +32,7 @@ export default class FlowBuilder {
     this.scene.add(light)
 
     const node = new Node(
+      "Test node",
       0,
       0,
       [{ text: "test input" }, { text: "test2 input", index: 0 }, { text: "inp3" }],
