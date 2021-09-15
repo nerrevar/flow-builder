@@ -22,7 +22,7 @@ export default class FlowBuilder {
     this.scene = new THREE.Scene()
     this.scene.background = new THREE.Color(BACKGROUND_COLOR)
 
-    this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 50)
+    this.camera = new THREE.OrthographicCamera(-5, 5, 5, -5, 0.1, 50)
     this.camera.position.z = 1
     this.camera.lookAt(this.scene.position)
     this.scene.add(this.camera)
@@ -31,8 +31,8 @@ export default class FlowBuilder {
     this.scene.add(light)
 
     // Debug
-    this.scene.add(new THREE.AxesHelper(10))
-    this.scene.add(new THREE.CameraHelper(this.camera))
+    // this.scene.add(new THREE.AxesHelper(10))
+    // this.scene.add(new THREE.CameraHelper(this.camera))
 
     new BuilderControls(this.renderer.domElement, this.scene, this.camera)
 

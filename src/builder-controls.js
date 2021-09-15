@@ -63,6 +63,16 @@ export default class BuilderControls {
       )
     }
 
+    const onMoveLineExisting = moveEvt => {
+      this.target.userData.self.updateInput(
+        new Vector3(
+          -1 * this.mouse.x * this.camera.left,
+          this.mouse.y * this.camera.top,
+          0
+        )
+      )
+    }
+
     element.addEventListener(
       "pointerdown",
       e => {
@@ -93,8 +103,15 @@ export default class BuilderControls {
           return
         }
 
-        if (this.target.name === "line")
-          console.log("move line")
+        if (this.target.name === "line") {
+          element.addEventListener("pointermove", onMoveLineExisting)
+          element.addEventListener(
+            "pointerup",
+            () => element.removeEventListener("pointermove", onMoveLineExisting),
+            { once: true }
+          )
+          return
+        }
 
         if (this.target.name.startsWith("node")) {
           element.addEventListener("pointermove", onMove)

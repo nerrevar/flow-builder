@@ -14,6 +14,8 @@ export default class Line {
       new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 3 })
     )
     this.mesh.name = "line"
+    this.mesh.position.z = -0.001
+    this.mesh.userData.self = this
   }
 
   updateInput(inputPosition) {
@@ -40,5 +42,6 @@ export default class Line {
       new THREE.Vector3().subVectors(inputPosition, this.outputPosition)
     ]).getPoints(50)
     this.geometry.setFromPoints(this.points)
+    this.geometry.computeBoundingSphere()
   }
 }
