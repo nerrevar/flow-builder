@@ -43,8 +43,10 @@ export default class Node {
   }
 
   calculateTextWidths() {
-    this.maxInputTextWidth = Math.max(...this.inputs.map(el => el.text.length)) * TEXT_PADDING
-    this.maxOutputTextWidth = Math.max(...this.outputs.map(el => el.text.length)) * TEXT_PADDING
+    this.maxInputTextWidth =
+      Math.max(...this.inputs.map(el => el.text.length)) * TEXT_PADDING
+    this.maxOutputTextWidth =
+      Math.max(...this.outputs.map(el => el.text.length)) * TEXT_PADDING
   }
 
   resize() {
@@ -87,7 +89,8 @@ export default class Node {
     )
     name.geometry.computeBoundingBox()
     name.position.y = this.y + this.height / 2 + HEADER_HEIGHT + FONT_SIZE
-    name.position.x = this.x - this.width / 2 + name.geometry.boundingBox.min.x + TEXT_PADDING
+    name.position.x =
+      this.x - this.width / 2 + name.geometry.boundingBox.min.x + TEXT_PADDING
     this.mesh.add(name)
   }
 
@@ -101,8 +104,7 @@ export default class Node {
       inputParams.text,
       true
     )
-    this.mesh.add(input.blockMesh)
-    this.mesh.add(input.textMesh)
+    this.mesh.add(input.mesh)
   }
   addOutput(outputParams) {
     const output = new Port(
@@ -114,8 +116,7 @@ export default class Node {
       outputParams.text,
       false
     )
-    this.mesh.add(output.blockMesh)
-    this.mesh.add(output.textMesh)
+    this.mesh.add(output.mesh)
   }
 
 }

@@ -6,7 +6,9 @@ export const NODE_COLOR = 0x303030
 export const NODE_HEADER_COLOR = 0xaaffdd
 export const NODE_NAME_COLOR = 0x00aa00
 export const PORT_COLOR = 0xffaa00
+export const PORT_HOVER_COLOR = 0xffff66
 export const PORT_TEXT_COLOR = 0x00aa00
+export const PORT_TEXT_HOVER_COLOR = 0x00ff00
 
 export const HEADER_HEIGHT = 0.2
 

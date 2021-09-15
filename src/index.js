@@ -4,12 +4,14 @@ import * as THREE from "three"
 import Node from "./node"
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+import BuilderControls from "./builder-controls"
 
 import { BACKGROUND_COLOR } from "./settings"
 
 export default class FlowBuilder {
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
+    this.renderer.setPixelRatio( window.devicePixelRatio )
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     window.addEventListener(
       "resize",
@@ -25,11 +27,20 @@ export default class FlowBuilder {
     this.camera.lookAt(this.scene.position)
     this.scene.add(this.camera)
 
-    this.scene.add(new THREE.AxesHelper(10))
-    new OrbitControls(this.camera, this.renderer.domElement)
-
     const light = new THREE.AmbientLight(0xffffff)
     this.scene.add(light)
+
+    // Debug
+    this.scene.add(new THREE.AxesHelper(10))
+    this.scene.add(new THREE.CameraHelper(this.camera))
+
+    new BuilderControls(this.renderer.domElement, this.scene, this.camera)
+
+    const controls = new OrbitControls(this.camera, this.renderer.domElement)
+    controls.mouseButtons = {
+      LEFT: THREE.MOUSE.PAN,
+      MIDDLE: THREE.MOUSE.DOLLY,
+    }
 
     const node = new Node(
       "Test node",

@@ -25,18 +25,19 @@ export default class Port {
   }
 
   createMeshes() {
-    this.blockMesh = new THREE.Mesh(
+    const blockMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(PORT_WIDTH, PORT_HEIGHT),
       new THREE.MeshBasicMaterial({ color: PORT_COLOR })
     )
-    this.blockMesh.position.y = this.isInput ?
+    blockMesh.name = "port"
+    blockMesh.position.y = this.isInput ?
       this.y - PORT_HEIGHT / 2 :
       this.y + PORT_HEIGHT / 2
-    this.blockMesh.position.x = this.isInput ?
+    blockMesh.position.x = this.isInput ?
       this.x - PORT_WIDTH / 2 :
       this.x + PORT_WIDTH / 2
 
-    this.textMesh = new THREE.Mesh(
+    const textMesh = new THREE.Mesh(
       new THREE.TextBufferGeometry(this.text, {
         font: FONT,
         size: FONT_SIZE,
@@ -44,12 +45,18 @@ export default class Port {
       }),
       new THREE.MeshBasicMaterial({ color: PORT_TEXT_COLOR })
     )
-    this.textMesh.geometry.computeBoundingBox()
-    this.textMesh.position.y = this.isInput ?
+    textMesh.name = "text"
+    textMesh.geometry.computeBoundingBox()
+    textMesh.position.y = this.isInput ?
       this.y - PORT_HEIGHT / 2 :
       this.y + PORT_HEIGHT / 2
-    this.textMesh.position.x = this.isInput ?
-      this.x + this.textMesh.geometry.boundingBox.min.x + TEXT_PADDING :
-      this.x - this.textMesh.geometry.boundingBox.max.x - TEXT_PADDING
+    textMesh.position.x = this.isInput ?
+      this.x + textMesh.geometry.boundingBox.min.x + TEXT_PADDING :
+      this.x - textMesh.geometry.boundingBox.max.x - TEXT_PADDING
+
+    this.mesh = new THREE.Group()
+    this.mesh.name = "port-group"
+    this.mesh.add(blockMesh)
+    this.mesh.add(textMesh)
   }
 }
