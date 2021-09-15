@@ -76,7 +76,7 @@ export default class Node {
       new THREE.PlaneGeometry(this.width, HEADER_HEIGHT),
       new THREE.MeshBasicMaterial({ color: NODE_HEADER_COLOR })
     )
-    header.position.y = this.y + this.height / 2 + HEADER_HEIGHT / 2
+    header.position.y = this.height / 2 + HEADER_HEIGHT / 2
     this.mesh.add(header)
 
     const name = new THREE.Mesh(
@@ -88,17 +88,17 @@ export default class Node {
       new THREE.MeshBasicMaterial({ color: NODE_NAME_COLOR })
     )
     name.geometry.computeBoundingBox()
-    name.position.y = this.y + this.height / 2 + HEADER_HEIGHT + FONT_SIZE
+    name.position.y = this.height / 2 + HEADER_HEIGHT + FONT_SIZE
     name.position.x =
-      this.x - this.width / 2 + name.geometry.boundingBox.min.x + TEXT_PADDING
+      -this.width / 2 + name.geometry.boundingBox.min.x + TEXT_PADDING
     this.mesh.add(name)
   }
 
   addInput(inputParams) {
     const input = new Port(
       inputParams.index || this.defaultIndex++,
-      this.x - this.width / 2,
-      this.y + this.height / 2 -
+      -this.width / 2,
+      this.height / 2 -
         this.padding.vertical -
         this.inputCount++ * (PORT_HEIGHT + this.padding.betweenPorts),
       inputParams.text,
@@ -109,8 +109,8 @@ export default class Node {
   addOutput(outputParams) {
     const output = new Port(
       outputParams.index || this.defaultIndex++,
-      this.x + this.width / 2,
-      this.y - this.height / 2 +
+      this.width / 2,
+      -this.height / 2 +
         this.padding.vertical +
         this.outputCount++ * (PORT_HEIGHT + this.padding.betweenPorts),
       outputParams.text,
