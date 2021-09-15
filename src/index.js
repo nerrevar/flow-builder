@@ -50,6 +50,14 @@ export default class FlowBuilder {
       [{ text: "test output" }]
     )
     this.scene.add(node.mesh)
+    const node2 = new Node(
+      "Node 2",
+      3,
+      2,
+      [{ text: "inp" }],
+      [{ text: "out" }]
+    )
+    this.scene.add(node2.mesh)
 
     this.animate()
   }

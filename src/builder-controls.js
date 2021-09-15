@@ -1,4 +1,6 @@
-import { Raycaster, Vector2 } from "three"
+import { Raycaster, Vector2, Vector3 } from "three"
+
+import Line from "./line"
 
 import {
   PORT_COLOR,
@@ -51,6 +53,16 @@ export default class BuilderControls {
       this.target.position.y = this.mouse.y * this.camera.top
     }
 
+    const onMoveLine = moveEvt => {
+      this.target.updateInput(
+        new Vector3(
+          -1 * this.mouse.x * this.camera.left,
+          this.mouse.y * this.camera.top,
+          0
+        )
+      )
+    }
+
     element.addEventListener(
       "pointerdown",
       e => {
@@ -61,11 +73,25 @@ export default class BuilderControls {
         )[0]?.object
         if (!this.target)
           return
-        else
-          e.stopImmediatePropagation()
 
-        if (this.target.name === "port")
-          console.log("create line")
+        e.stopImmediatePropagation()
+
+        if (this.target.name === "port") {
+          const line = new Line(new Vector3(
+            -1 * this.mouse.x * this.camera.left,
+            this.mouse.y * this.camera.top,
+            0
+          ))
+          this.target.add(line.mesh)
+          this.target = line
+          element.addEventListener("pointermove", onMoveLine)
+          element.addEventListener(
+            "pointerup",
+            () => element.removeEventListener("pointermove", onMoveLine),
+            { once: true }
+          )
+          return
+        }
 
         if (this.target.name === "line")
           console.log("move line")
@@ -77,6 +103,7 @@ export default class BuilderControls {
             () => element.removeEventListener("pointermove", onMove),
             { once: true }
           )
+          return
         }
       },
       { capture: true }
