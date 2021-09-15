@@ -17,10 +17,14 @@ export default class BuilderControls {
 
     const moveDisabler = e => e.stopPropagation()
 
-    element.addEventListener("mousemove", e => {
+    element.addEventListener("pointermove", e => {
       this.mouse.x = e.clientX / window.innerWidth * 2 - 1
       this.mouse.y = -1 * (e.clientY / window.innerHeight * 2 - 1)
 
+      this.raycaster.setFromCamera(this.mouse, this.camera)
+      this.intersection = this.raycaster.intersectObject(this.scene, true)
+
+      // Reset port colors to default
       this.scene.children
         .filter(el => el.type === "Mesh")
         .forEach(el => el.children
@@ -32,10 +36,8 @@ export default class BuilderControls {
           )
         )
 
-      this.raycaster.setFromCamera(this.mouse, this.camera)
-      const intersection = this.raycaster.intersectObject(this.scene, true)
-
-      intersection
+      // Change port color on hover
+      this.intersection
         .filter(el => el.object.parent.name === "port-group")
         .forEach(el => el.object.parent.children
           .forEach(el => el.material.color.setHex(
@@ -44,16 +46,40 @@ export default class BuilderControls {
         )
     })
 
+    const onMove = moveEvt => {
+      this.target.position.x = -1 * this.mouse.x * this.camera.left
+      this.target.position.y = this.mouse.y * this.camera.top
+    }
+
     element.addEventListener(
-      "click",
+      "pointerdown",
       e => {
-        this.raycaster.setFromCamera(this.mouse, this.camera)
-        const intersects = this.raycaster.intersectObjects(this.scene.children)
+        this.target = this.intersection.filter(
+          el => el.object.name === "port" ||
+            el.object.name === "line" ||
+            el.object.name.startsWith("node")
+        )[0]?.object
+        if (!this.target)
+          return
+        else
+          e.stopImmediatePropagation()
 
-        if (intersects.length) {
+        if (this.target.name === "port")
+          console.log("create line")
 
+        if (this.target.name === "line")
+          console.log("move line")
+
+        if (this.target.name.startsWith("node")) {
+          element.addEventListener("pointermove", onMove)
+          element.addEventListener(
+            "pointerup",
+            () => element.removeEventListener("pointermove", onMove),
+            { once: true }
+          )
         }
       },
+      { capture: true }
     )
   }
 }

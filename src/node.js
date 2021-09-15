@@ -68,7 +68,7 @@ export default class Node {
       new THREE.PlaneGeometry(this.width, this.height),
       new THREE.MeshBasicMaterial({ color: NODE_COLOR })
     )
-    this.mesh.name = this.name
+    this.mesh.name = `node ${this.name}`
     this.mesh.position.set(this.x, this.y, 0)
     this.mesh.lookAt(this.x, this.y, 1)
 
